@@ -90,6 +90,10 @@ BOOL Info::OnInitDialog()
 			m_list.SetItemText(k, 3, work);
 			m_list.SetItemText(k, 4, salary);
 			p++;
+
+		}
+		else {
+			continue;
 		}
 		
 		shui=_ttof(salary);
@@ -160,6 +164,7 @@ void Info::OnBnClickedButton1()
 	CString peo;
 	CString sum, jok;
 	CString salary, shui;
+	int tmp;
 
 	while (p) 
      {
@@ -173,6 +178,13 @@ void Info::OnBnClickedButton1()
        
 	   sum.Format(_T("%d"), _ttoi(sum)- _ttoi(salary));  //新的工资参数
 	   jok.Format(_T("%d"), _ttoi(jok) - _ttoi(shui));   //新的税收参数
+	   /*tmp = _ttoi(sum);
+	   tmp -= _ttoi(salary);
+	   sum.Format(_T("%d"), tmp);
+
+	   tmp = _ttoi(jok);
+	   tmp -= _ttoi(shui);
+	   jok.Format(_T("%d"), tmp);*/
 
 	   po=_ttoi(peo);                                    
 
