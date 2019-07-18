@@ -83,12 +83,15 @@ BOOL Info::OnInitDialog()
 		AfxExtractSubString ( work, strTemp, 4, ' ');
 		AfxExtractSubString ( salary, strTemp, 5, ' ');
 		k=0;
-		m_list.InsertItem(k,number);
-		m_list.SetItemText(k,1,name);
-		m_list.SetItemText(k,2,age);
-		m_list.SetItemText(k,3,work);
-		m_list.SetItemText(k,4,salary);
-		p++;	
+		if (!number.IsEmpty()) {
+			m_list.InsertItem(k, number);
+			m_list.SetItemText(k, 1, name);
+			m_list.SetItemText(k, 2, age);
+			m_list.SetItemText(k, 3, work);
+			m_list.SetItemText(k, 4, salary);
+			p++;
+		}
+		
 		shui=_ttof(salary);
 		s+=shui;
 		//税金计算代码
@@ -153,10 +156,34 @@ void Info::OnBnClickedButton2()
 void Info::OnBnClickedButton1()
 {
 	POSITION p=m_list.GetFirstSelectedItemPosition();    //获取首选中行位置
+	int po = 0;
+	CString peo;
+	CString sum, jok;
+	CString salary, shui;
+
 	while (p) 
      {
        int  nSelected=m_list.GetNextSelectedItem(p); //获取选中行的索引
+	   salary = m_list.GetItemText(nSelected, 5);    //获取选定行的工资参数
+	   shui = m_list.GetItemText(nSelected, 5);      //获取选定行的税收参数
+
+       GetDlgItem(IDC_PEOPLE)->GetWindowText(peo);   //获取总的人数
+	   GetDlgItem(IDC_SUM)->GetWindowText(sum);   //获取总的工资参数
+	   GetDlgItem(IDC_SHUI)->GetWindowText(jok);   //获取总的税收参数
+       
+	   sum.Format(_T("%d"), _ttoi(sum)- _ttoi(salary));  //新的工资参数
+	   jok.Format(_T("%d"), _ttoi(jok) - _ttoi(shui));   //新的税收参数
+
+	   po=_ttoi(peo);                                    
+
        m_list.DeleteItem(nSelected); //根据索引删除
+	   po--;                         //人数减一
+	   peo.Format(_T("%d"), po);
+
+	   GetDlgItem(IDC_PEOPLE)->SetWindowText(peo); //重新设置人数，税收，工资
+	   GetDlgItem(IDC_SUM)->SetWindowText(sum);
+	   GetDlgItem(IDC_SHUI)->SetWindowText(jok);
+
        p  = m_list.GetFirstSelectedItemPosition();  
      }
 }
